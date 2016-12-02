@@ -26,83 +26,35 @@
   ?>
   <body>
     <form class="ui form" action="reserveticket.php" method="POST">
-      <h4 class="ui dividing header">Event Details</h3>
-      <label>Event name</label>
+      <h4 class="ui dividing header">Reserve Ticket</h3>
+      <label>Select Event</label>
       <div class="field">
-        <input type="text" name="name" />
+        <select class="ui dropdown" name="eventname" id="eventname">
+          <?php
+            mysql_connect("localhost", "root", "") or die(mysql_error());
+            mysql_select_db("ticketing") or die("Cannot connect to database");
+            $query = mysql_query("SELECT * from event");
+            while($row=mysql_fetch_array($query)){
+              print "<option value='". $row['eventID']. "'>". $row['eventName']. "</option>";
+            }
+           ?>
+        </select>
       </div>
+      <label>Select Time</label>
       <div class="field">
-        <label>Synopsis</label>
-        <textarea name="synopsis"></textarea>
+        <select class="ui dropdown show" name="show" id="show" disabled>
+          <?php
+            mysql_connect("localhost", "root", "") or die(mysql_error());
+            mysql_select_db("ticketing") or die("Cannot connect to database");
+            $query = mysql_query("SELECT showDate, startTime, endTime FROM shows WHERE eventID =". $_GET[id]);
+            while($row=mysql_fetch_array($query)){
+              print "<>"
+            }
+           ?>
+        </select>
       </div>
-      <h4 class="ui dividing header">Time</h3>
-      <div class="theaters">
-        <div class="fields">
-          <div class="eight wide field">
-            <label>Theater</label>
-            <select class="ui dropdown" name='theaters[]'>
-              <option value="">Choose location</option>
-              <?php
-                mysql_connect("localhost", "root", "") or die(mysql_error());
-                mysql_select_db("ticketing") or die("Cannot connect to database");
-                $query = mysql_query("SELECT theaterID, theaterName FROM theater");
-                while($row=mysql_fetch_array($query)){
-                  print "<option value='". $row['theaterID']. "'>". $row['theaterName']. "</option>";
-                }
-               ?>
-            </select>
-          </div>
-          <div class="four wide field">
-            <label>Start Time</label>
-            <div class="ui calendar startTime">
-              <div class="ui left input icon">
-                <i class="calendar icon"></i>
-                <input type="text" name="start[]" />
-              </div>
-            </div>
-          </div>
-          <div class="four wide field">
-            <label>End Time</label>
-            <div class="ui calendar endTime">
-              <div class="ui left input icon">
-                <i class="calendar icon"></i>
-                <input type="text" name="end[]" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button id="addShow" class="ui button">Add Show</button>
-      <button id="removeShow" class="ui button">Remove Show</button>
       <button class="ui button primary submit">Submit</button>
     </form>
     <script src="js/script.js"></script>
   </body>
 </html>
-
-<?php
-  include 'ChromePhp.php';
-
-  $bool = NULL;
-
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $theaters = $_POST['theaters'];
-    $startTimes = $_POST['start'];
-    $endTimes = $_POST['end'];
-    $name = mysql_real_escape_string($_POST['name']);
-    $synopsis = mysql_real_escape_string($_POST['synopsis']);
-
-    mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
-    mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
-
-    mysql_query("INSERT INTO event (eventName, synopsis) VALUES ('$name', '$synopsis')");
-    $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
-
-    foreach ($theaters as $index => $theaterID) {
-      $startTime = date("H:i:s",strtotime($startTimes[$index]));
-      $date = date("Y-m-d",strtotime($startTimes[$index]));
-      $endTime = date("H:i:s",strtotime($endTimes[$index]));
-      mysql_query("INSERT INTO shows (eventID, theaterID, showDate, startTime, endTime) VALUES ('$eventID', '$theaterID', '$date', '$startTime', '$endTime')");
-    }
-  }
-?>

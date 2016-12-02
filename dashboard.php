@@ -30,5 +30,7 @@
     <br/>
     <a href="addtheater.php"> Click here to add a theater</a>
     <br/>
+    <a href="reserveticket.php"> Click here to reserve a ticket</a>
+    <br/>
   </body>
 </html>
