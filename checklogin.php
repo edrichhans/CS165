@@ -14,10 +14,12 @@
     while($row = mysql_fetch_assoc($query)){ //display all rows from query
       $table_users = $row['username']; //the first username row is passed on to $table_users and so on until the query is finished
       $table_password = $row['password'];
+      $table_userID = $row['userID'];
     }
     if(($username == $table_users) && ($password == $table_password)){
       if($password == $table_password){
         $_SESSION['user'] = $username;
+        $_SESSION['userID'] = $table_userID;
         header('location: dashboard.php');
       }
     }

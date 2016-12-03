@@ -95,14 +95,28 @@
     mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
     mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
 
+
+    $userID=$_SESSION['userID'];
     mysql_query("INSERT INTO event (eventName, synopsis) VALUES ('$name', '$synopsis')");
     $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
+    mysql_query("INSERT INTO created(userID,eventID,dateCreated) VALUES ('$userID','$eventID',now())");
+
 
     foreach ($theaters as $index => $theaterID) {
       $startTime = date("H:i:s",strtotime($startTimes[$index]));
       $date = date("Y-m-d",strtotime($startTimes[$index]));
       $endTime = date("H:i:s",strtotime($endTimes[$index]));
+      $seats = mysql_fetch_array(mysql_query("SELECT noOfSeats FROM theater WHERE theaterID='$theaterID'"))[0];
+      $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
       mysql_query("INSERT INTO shows (eventID, theaterID, showDate, startTime, endTime) VALUES ('$eventID', '$theaterID', '$date', '$startTime', '$endTime')");
+      $showID = mysql_insert_id();
+      $_SESSION['seats']=$seats;
+      $_SESSION['theaterID'] = $theaterID;
+      for ($x=0; $x<$seats; $x++){
+        mysql_query("INSERT INTO tickets(showID) VALUES ('$showID')");
+      }
+      // header('location:bla.php');
     }
+      
   }
 ?>
