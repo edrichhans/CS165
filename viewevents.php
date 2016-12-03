@@ -20,19 +20,22 @@
     </br>
     <table width="100%">
     <tr>
-      <th>Name</th>
+      <th width ="30%">Name</th>
       <th>Actors</th>
       <th>Synopsis</th>
+      <th>View Shows</th>
       </tr>
     <?php
         mysql_connect("localhost", "root", "") or die(mysql_error());
         mysql_select_db("ticketing") or die("Cannot connect to database");
-        $query = mysql_query("SELECT eventName,actors,synopsis FROM event");
+        $query = mysql_query("SELECT * FROM event");
         while($row = mysql_fetch_array($query)){
           print "<tr>";
             print '<td align="center">'. $row['eventName']."</td>";
             print '<td align="center">'. $row['actors']."</td>";
             print '<td align="center">'. $row['synopsis']."</td>";
+            print '<td align="center"><a href="viewshows.php?id='.$row['eventID'].'">shows for '.$row['eventName'].'</a></td>';
+
 
           print "</tr>";
         }
