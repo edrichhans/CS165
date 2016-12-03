@@ -32,5 +32,10 @@
     <br/>
     <a href="reserveticket.php"> Click here to reserve a ticket</a>
     <br/>
+<<<<<<< HEAD
+=======
+    <a href="viewevents.php"> Click here to view events </a>
+    <br/>
+>>>>>>> refs/remotes/origin/renee
   </body>
 </html>
