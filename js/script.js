@@ -17,17 +17,8 @@ $('#removeShow').click(function(){
 });
 
 $('#eventname').change(function(){
-  $('.show').removeClass("disabled");
   $('#show').prop("disabled", false);
-  // $.ajax({
-  //   data: $('#eventname').val(),
-  //   url: 'getshows.php',
-  //   method: 'POST',
-  //   success: function(msg){
-  //     alert(msg);
-  //   }
-  // });
-  $.post('getshows.php', {data: $('#eventname').val()});
+  // $.post('getshows.php', {data: $('#eventname').val()});
 });
 
 $(document).ready(function(){

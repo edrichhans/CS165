@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Create Event </title>
+    <title>Reserve Ticket</title>
     <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="css/transition.min.css">
     <link rel="stylesheet" type="text/css" href="css/popup.min.css">
@@ -30,6 +30,7 @@
       <label>Select Event</label>
       <div class="field">
         <select class="ui dropdown" name="eventname" id="eventname">
+          <option value="">Select Event</option>
           <?php
             mysql_connect("localhost", "root", "") or die(mysql_error());
             mysql_select_db("ticketing") or die("Cannot connect to database");
@@ -42,13 +43,13 @@
       </div>
       <label>Select Time</label>
       <div class="field">
-        <select class="ui dropdown show" name="show" id="show" disabled>
+        <select class="ui dropdown show" name="show" id="show">
           <?php
             mysql_connect("localhost", "root", "") or die(mysql_error());
             mysql_select_db("ticketing") or die("Cannot connect to database");
-            $query = mysql_query("SELECT showDate, startTime, endTime FROM shows WHERE eventID =". $_GET[id]);
+            $query = mysql_query("SELECT showID, showDate, startTime, endTime FROM shows WHERE eventID =". $_GET['id']);
             while($row=mysql_fetch_array($query)){
-              print "<>"
+              print "<option value='". $row['showID']. "'>". $row['showDate']. " ". $row['startTime']. "-". $row['endTime']. "</option>";
             }
            ?>
         </select>
@@ -58,3 +59,29 @@
     <script src="js/script.js"></script>
   </body>
 </html>
+
+<?php
+  include 'ChromePhp.php';
+
+  $bool = NULL;
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $show = $_POST['show'];
+
+    mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
+    mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
+
+    $userID=$_SESSION['userID'];
+    $ticketNoQuery = mysql_query("SELECT ticketNo from tickets where showID = '$show' and isReserved = 0 LIMIT 1");
+    $ticketNoArr = mysql_fetch_array($ticketNoQuery);
+    // ChromePhp::log($_SESSION);
+    $ticketNo = $ticketNoArr['ticketNo'];
+    $ticketNo = (int)$ticketNo;
+    $user = $_SESSION['userID'];
+    $user = (int)$user;
+    mysql_query("UPDATE tickets SET isReserved = 1 WHERE ticketNo = '$ticketNo'");
+    // ChromePhp::log((int)$ticketNo);
+    // ChromePhp::log((int)$user);
+    mysql_query("INSERT INTO reserved VALUES ('$ticketNo', '$user', now())");
+  }
+?>
