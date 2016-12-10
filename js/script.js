@@ -16,8 +16,19 @@ $('#removeShow').click(function(){
   $('.theaters').children().last().remove();
 });
 
+$('#eventname').change(function(){
+  $('#show').prop("disabled", false);
+  // $.post('getshows.php', {data: $('#eventname').val()});
+});
+
 $(document).ready(function(){
   $('.dropdown').dropdown();
   $('.startTime').calendar({endCalendar: $('.endTime')});
   $('.endTime').calendar({startCalendar: $('.startTime')});
+});
+
+$('#eventname').change(function (){
+  var url = window.location.pathname;
+  url += '?id=' + parseInt($(this).val());
+  window.location.href = url;
 });

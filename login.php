@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>My first PHP Website</title>
+        <title>Login</title>
         <link rel="stylesheet" href="css/semantic.min.css">
         <link rel="stylesheet" href="css/style.css">
         <script src="js/jquery-3.1.1.min.js"</script>

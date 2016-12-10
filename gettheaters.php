@@ -5,4 +5,4 @@
   while($row=mysql_fetch_array($query)){
     print "<option value='". $row['theaterID']. "'>". $row['theaterName']. "</option>";
   }
- ?>
+?>
