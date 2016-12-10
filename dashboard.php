@@ -34,5 +34,7 @@
     <br/>
     <a href="viewevents.php"> Click here to view events </a>
     <br/>
+    <a href="viewreservedtickets.php"> Click here to view your reserved tickets </a>
+    <br/>
   </body>
 </html>
