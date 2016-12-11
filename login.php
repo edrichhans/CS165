@@ -8,7 +8,6 @@
     </head>
     <body>
         <h2 class="ui dividing header">Login Page</h2>
-        <a href="index.php">Click here to go back</a>
         <form class="ui form" action="checklogin.php" method="POST">
           <div class="field">
             <label>Username</label>

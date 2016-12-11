@@ -26,6 +26,9 @@
   ?>
   <body>
     <h1 class="ui header">Dashboard</h1>
+    <?php
+      print '<h3>Hello '. $_SESSION["name"]. '!</h3>';
+     ?>
     <a href="createevent.php"> Click here to create an event</a>
     <br/>
     <a href="addtheater.php"> Click here to add a theater</a>
@@ -36,5 +39,10 @@
     <br/>
     <a href="viewreservedtickets.php"> Click here to view your reserved tickets </a>
     <br/>
+    <?php
+      if($_SESSION['rights'] == 'admin'){
+        print '<a href="addUser.php">Click here to add users</a>';
+      }
+     ?>
   </body>
 </html>

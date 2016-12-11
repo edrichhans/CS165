@@ -3,8 +3,10 @@
     <title>Theater</title>
     <link rel="stylesheet" href="css/semantic.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/form.min.css">
     <script src="js/jquery-3.1.1.min.js"</script>
     <script src="js/semantic.min.js"></script>
+    <script src="js/form.min.js"></script>
   </head>
   <?php
     session_start();
@@ -30,7 +32,7 @@
           </div>
           <div class="field">
             <label>Phone</label>
-            <input type="number" name="phone" required="required"/>
+            <input type="text" name="phone" required="required"/>
           </div>
         </div>
       </div>
@@ -40,14 +42,42 @@
       </div>
       <div class="field">
         <label>Password</label>
-        <input type="text" name="password" required="required"/>
+        <input type="password" name="password" required="required"/>
       </div>
       <div class="field">
         <label>Retype-password</label>
-        <input type="text" name="repassword" required="required"/>
+        <input type="password" name="repassword" required="required"/>
       </div>
       <button class="ui submit primary button" type="submit">Create User</button>
     </form>
+    <script>
+      $('.ui.form')
+        .form({
+          name: 'empty',
+          email: 'empty',
+          phone: 'empty',
+          username: 'empty',
+          password:{
+      			identifier: 'password',
+      			rules:[
+      				{
+      					type: 'empty',
+      					prompt: 'Please enter password'
+      				}
+      			]
+      		},
+          repassword: {
+            identifier: 'repassword',
+            rules:[
+              {
+                type: 'empty',
+                type: 'match[password]',
+                prompt: 'Passwords don\'t match'
+              }
+            ]
+          }
+        });
+    </script>
   </body>
 </html>
 
@@ -78,8 +108,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 if($bool){
-  mysql_query("INSERT INTO theater (theatername, noOfSeats, location) VALUES ('$name', '$capacity', '$location')");
-  Print '<script>alert("Successfully Created Theater!");</script>'; // Prompts the user
-  Print '<script>window.location.assign("addtheater.php");</script>'; // redirects to register.php
+  mysql_query("INSERT INTO user (username, name, password, email, phone, rights) VALUES ('$username', '$name', '$password', '$email', '$phone', 'user')");
+  Print '<script>alert("Successfully Created User!");</script>'; // Prompts the user
+  Print '<script>window.location.replace("/CS165");</script>'; // redirects to register.php
 }
 ?>

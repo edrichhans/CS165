@@ -17,12 +17,14 @@
       $table_password = $row['password'];
       $table_userID = $row['userID'];
       $table_rights = $row['rights'];
+      $table_name = $row['name'];
     }
     if(($username == $table_users) && ($password == $table_password)){
       if($password == $table_password){
         $_SESSION['user'] = $username;
         $_SESSION['userID'] = $table_userID;
         $_SESSION['rights'] = $table_rights;
+        $_SESSION['name'] = $table_name;
         header('location: dashboard.php');
       }
     }
