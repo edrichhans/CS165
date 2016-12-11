@@ -16,6 +16,8 @@
     $user = $_SESSION['user'];
   ?>
   <body>
+    <a href='/CS165'>Home</a>
+    <br/>
     <h3 class="ui dividing header" align="center">Events</h2>
     </br>
     <table width="100%">
@@ -40,10 +42,6 @@
           print "</tr>";
         }
     ?>
-    </table>    
+    </table>
   </body>
 </html>
-
-
-
-

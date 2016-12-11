@@ -8,7 +8,7 @@
   </head>
   <?php
     session_start();
-    if($_SESSION['user']){
+    if($_SESSION['rights'] == 'admin'){
     }
     else{
       header('location: index.php');
@@ -17,7 +17,8 @@
     $id_exists = false;
   ?>
   <body>
-  </br>
+    <a href='/CS165'>Home</a>
+    <br/>
     <h3 class="ui dividing header" align="center">Reserved Tickets</h2>
     </br>
     <table width="100%">
@@ -41,14 +42,8 @@
               print '<td align="center">'. $row['startTime']."</td>";
               print '<td align="center">'. $row['endTime']."</td>";
               print '<td align="center"><a href="cancel.php?id='.$row['ticketNo'].'">Cancel reservation</a></td>';
-
-
-
             print "</tr>";
           }
-         
-
-
       ?>
 
 <!--     <?php
@@ -81,13 +76,9 @@
 
             print "</tr>";
           }
-          
+
         }
     ?> -->
-    </table>    
+    </table>
   </body>
 </html>
-
-
-
-

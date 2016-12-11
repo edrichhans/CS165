@@ -25,6 +25,8 @@
     $user = $_SESSION['user'];
   ?>
   <body>
+    <a href='/CS165'>Home</a>
+    <br/>
     <form class="ui form" action="reserveticket.php" method="POST">
       <h4 class="ui dividing header">Reserve Ticket</h3>
       <label>Select Event</label>

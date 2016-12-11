@@ -8,7 +8,7 @@
   </head>
   <?php
     session_start();
-    if($_SESSION['user']){
+    if($_SESSION['rights'] == 'admin'){
     }
     else{
       header('location: index.php');
@@ -16,10 +16,8 @@
     $user = $_SESSION['user'];
   ?>
   <body>
-    <a href='/CS165'>Home</a>
-    <br/>
-    <h3 class="ui dividing header">Add Theater</h2>
-    <form class="ui form" action="addtheater.php" method="POST">
+    <h3 class="ui dividing header">Add User</h2>
+    <form class="ui form" action="adduser.php" method="POST">
       <div class="field">
         <label>Name</label>
         <input type="text" name="name" required="required/">
@@ -27,16 +25,28 @@
       <div class="field">
         <div class="two fields">
           <div class="field">
-            <label>Address</label>
-            <input type="text" name="location" required="required"/>
+            <label>e-mail</label>
+            <input type="text" name="email" required="required"/>
           </div>
           <div class="field">
-            <label>Capacity</label>
-            <input type="number" name="capacity" required="required"/>
+            <label>Phone</label>
+            <input type="number" name="phone" required="required"/>
           </div>
         </div>
       </div>
-      <button class="ui submit primary button" type="submit">Create Theater</button>
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" required="required"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="text" name="password" required="required"/>
+      </div>
+      <div class="field">
+        <label>Retype-password</label>
+        <input type="text" name="repassword" required="required"/>
+      </div>
+      <button class="ui submit primary button" type="submit">Create User</button>
     </form>
   </body>
 </html>
@@ -47,19 +57,21 @@ $bool = NULL;
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $name = mysql_real_escape_string($_POST['name']);
-  $location = mysql_real_escape_string($_POST['location']);
-  $capacity = $_POST['capacity'];
+  $email = mysql_real_escape_string($_POST['email']);
+  $phone = mysql_real_escape_string($_POST['phone']);
+  $username = mysql_real_escape_string($_POST['username']);
+  $password = mysql_real_escape_string($_POST['password']);
 
   $bool = true;
 
   mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
   mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
-  $query = mysql_query("Select * from theater");
+  $query = mysql_query("Select username from Users");
   while($row = mysql_fetch_array($query)){
     $table_users = $row['theatername'];
     if($name == $table_users){
       $bool = false;
-      Print '<script>alert("Theater name has been taken!");</script>';
+      Print '<script>alert("Username has been taken!");</script>';
       // Print '<script>window.location.assign("addtheater.php");</script>';
     }
   }

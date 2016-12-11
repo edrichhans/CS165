@@ -10,16 +10,19 @@
   $exists = mysql_num_rows($query); //check if username exists
   $table_users = "";
   $table_password = "";
+  $table_rights = "";
   if("$exists" > 0){
     while($row = mysql_fetch_assoc($query)){ //display all rows from query
       $table_users = $row['username']; //the first username row is passed on to $table_users and so on until the query is finished
       $table_password = $row['password'];
       $table_userID = $row['userID'];
+      $table_rights = $row['rights'];
     }
     if(($username == $table_users) && ($password == $table_password)){
       if($password == $table_password){
         $_SESSION['user'] = $username;
         $_SESSION['userID'] = $table_userID;
+        $_SESSION['rights'] = $table_rights;
         header('location: dashboard.php');
       }
     }

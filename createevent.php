@@ -25,6 +25,8 @@
     $user = $_SESSION['user'];
   ?>
   <body>
+    <a href='/CS165'>Home</a>
+    <br/>
     <form class="ui form" action="createevent.php" method="POST">
       <h4 class="ui dividing header">Event Details</h3>
       <label>Event name</label>

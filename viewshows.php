@@ -17,8 +17,10 @@
     $id_exists = false;
   ?>
   <body>
+    <a href='/CS165'>Home</a>
+    <br/>
     <a href ="viewevents.php">Go back to Events</a>
-    
+
     <?php
         if(!empty($_GET['id'])){
           $eid=$_GET['id'];
@@ -49,13 +51,9 @@
 
             print "</tr>";
           }
-          
+
         }
     ?>
-    </table>    
+    </table>
   </body>
 </html>
-
-
-
-
