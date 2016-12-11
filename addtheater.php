@@ -43,31 +43,31 @@
 
 <?php
 
-$bool = NULL;
+  $bool = NULL;
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $name = mysql_real_escape_string($_POST['name']);
-  $location = mysql_real_escape_string($_POST['location']);
-  $capacity = $_POST['capacity'];
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $name = mysql_real_escape_string($_POST['name']);
+    $location = mysql_real_escape_string($_POST['location']);
+    $capacity = $_POST['capacity'];
 
-  $bool = true;
+    $bool = true;
 
-  mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
-  mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
-  $query = mysql_query("Select * from theater");
-  while($row = mysql_fetch_array($query)){
-    $table_users = $row['theatername'];
-    if($name == $table_users){
-      $bool = false;
-      Print '<script>alert("Theater name has been taken!");</script>';
-      // Print '<script>window.location.assign("addtheater.php");</script>';
+    mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
+    mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
+    $query = mysql_query("Select * from theater");
+    while($row = mysql_fetch_array($query)){
+      $table_users = $row['theatername'];
+      if($name == $table_users){
+        $bool = false;
+        Print '<script>alert("Theater name has been taken!");</script>';
+        // Print '<script>window.location.assign("addtheater.php");</script>';
+      }
     }
   }
-}
 
-if($bool){
-  mysql_query("INSERT INTO theater (theatername, noOfSeats, location) VALUES ('$name', '$capacity', '$location')");
-  Print '<script>alert("Successfully Created Theater!");</script>'; // Prompts the user
-  Print '<script>window.location.assign("addtheater.php");</script>'; // redirects to register.php
-}
+  if($bool){
+    mysql_query("INSERT INTO theater (theatername, noOfSeats, location) VALUES ('$name', '$capacity', '$location')");
+    Print '<script>alert("Successfully Created Theater!");</script>'; // Prompts the user
+    Print '<script>window.location.assign("addtheater.php");</script>'; // redirects to register.php
+  }
 ?>

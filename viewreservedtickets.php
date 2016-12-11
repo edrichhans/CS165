@@ -8,7 +8,7 @@
   </head>
   <?php
     session_start();
-    if($_SESSION['rights'] == 'admin'){
+    if($_SESSION['user']){
     }
     else{
       header('location: index.php');

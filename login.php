@@ -7,6 +7,12 @@
         <script src="js/semantic.min.js"></script>
     </head>
     <body>
+      <?php
+      session_start();
+      if($_SESSION['user']){
+        header('location: dashboard.php');
+      }
+       ?>
         <h2 class="ui dividing header">Login Page</h2>
         <form class="ui form" action="checklogin.php" method="POST">
           <div class="field">

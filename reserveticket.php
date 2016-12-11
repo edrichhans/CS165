@@ -85,5 +85,6 @@
     // ChromePhp::log((int)$ticketNo);
     // ChromePhp::log((int)$user);
     mysql_query("INSERT INTO reserved VALUES ('$ticketNo', '$user', now())");
+    print '<script>alert("Successfully reserved ticket"); window.location.replace("/CS165/viewreservedtickets.php");</script>';
   }
 ?>

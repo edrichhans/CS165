@@ -85,7 +85,33 @@
 <?php
   include 'ChromePhp.php';
 
-  $bool = NULL;
+  function datesOverlap($start_one,$end_one,$start_two,$end_two) {
+    ChromePhp::log($start_one);
+    ChromePhp::log($end_one);
+    ChromePhp::log($start_two);
+    ChromePhp::log($end_two);
+    if (($start_one <= $end_two && $end_one >= $start_two) || ($start_two <= $end_one && $end_two >= $start_one)) { //If the dates overlap
+      ChromePhp::log('overlap');
+      return 1; //return how many days overlap
+    }
+    return 0; //Return 0 if there is no overlap
+  }
+
+  function checkExists($theaters, $startTimes, $endTimes){
+    foreach($theaters as $index => $theaterID){
+      $shows = mysql_query("SELECT * FROM shows WHERE theaterID = '$theaterID'");
+      while($row = mysql_fetch_array($shows)){
+        $combinedStartDateTime = $row['showDate']. ' '. $row['startTime'];
+        $combinedEndDateTime = $row['showEndDate']. ' '. $row['endTime'];
+        $startDateTime = strtotime($combinedStartDateTime);
+        $endDateTime = strtotime($combinedEndDateTime);
+        if(datesOverlap(strtotime($startTimes[$index]), strtotime($endTimes[$index]), $startDateTime, $endDateTime)){
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $theaters = $_POST['theaters'];
@@ -97,28 +123,38 @@
     mysql_connect("localhost", "root", "") or die(mysql_error()); //connect to server
     mysql_select_db("ticketing") or die("Cannot connect to database"); //connect to database
 
+    $bool = checkExists($theaters, $startTimes, $endTimes);
 
-    $userID=$_SESSION['userID'];
-    mysql_query("INSERT INTO event (eventName, synopsis) VALUES ('$name', '$synopsis')");
-    $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
-    mysql_query("INSERT INTO created(userID,eventID,dateCreated) VALUES ('$userID','$eventID',now())");
+    ChromePhp::log($bool);
 
-
-    foreach ($theaters as $index => $theaterID) {
-      $startTime = date("H:i:s",strtotime($startTimes[$index]));
-      $date = date("Y-m-d",strtotime($startTimes[$index]));
-      $endTime = date("H:i:s",strtotime($endTimes[$index]));
-      $seats = mysql_fetch_array(mysql_query("SELECT noOfSeats FROM theater WHERE theaterID='$theaterID'"))[0];
-      $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
-      mysql_query("INSERT INTO shows (eventID, theaterID, showDate, startTime, endTime) VALUES ('$eventID', '$theaterID', '$date', '$startTime', '$endTime')");
-      $showID = mysql_insert_id();
-      $_SESSION['seats']=$seats;
-      $_SESSION['theaterID'] = $theaterID;
-      for ($x=0; $x<$seats; $x++){
-        mysql_query("INSERT INTO tickets(showID) VALUES ('$showID')");
-      }
-      // header('location:bla.php');
+    if($bool){
+      ChromePhp::log('pasok here');
+      Print '<script>alert("timeslot taken!");</script>';
     }
 
+    else{
+      $userID=$_SESSION['userID'];
+      mysql_query("INSERT INTO event (eventName, synopsis) VALUES ('$name', '$synopsis')");
+      $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
+      mysql_query("INSERT INTO created(userID,eventID,dateCreated) VALUES ('$userID','$eventID',now())");
+
+
+      foreach ($theaters as $index => $theaterID) {
+        $startTime = date("H:i:s",strtotime($startTimes[$index]));
+        $date = date("Y-m-d",strtotime($startTimes[$index]));
+        $endDate = date("Y-m-d",strtotime($endTimes[$index]));
+        $endTime = date("H:i:s",strtotime($endTimes[$index]));
+        $seats = mysql_fetch_array(mysql_query("SELECT noOfSeats FROM theater WHERE theaterID='$theaterID'"))[0];
+        $eventID = mysql_fetch_array(mysql_query("SELECT eventID FROM event WHERE eventName = '$name'"))[0];
+        mysql_query("INSERT INTO shows (eventID, theaterID, showDate, startTime, showEndDate, endTime) VALUES ('$eventID', '$theaterID', '$date', '$startTime', '$endDate', '$endTime')");
+        $showID = mysql_insert_id();
+        $_SESSION['seats']=$seats;
+        $_SESSION['theaterID'] = $theaterID;
+        for ($x=0; $x<$seats; $x++){
+          mysql_query("INSERT INTO tickets(showID) VALUES ('$showID')");
+        }
+      }
+      Print '<script>alert("Successfully Created Event");</script>';
+    }
   }
 ?>

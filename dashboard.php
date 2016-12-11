@@ -41,8 +41,10 @@
     <br/>
     <?php
       if($_SESSION['rights'] == 'admin'){
-        print '<a href="addUser.php">Click here to add users</a>';
+        print '<a href="addUser.php">Click here to add users</a><br/>';
       }
      ?>
+    <a href="logout.php"> Logout </a>
+    <br/>
   </body>
 </html>
