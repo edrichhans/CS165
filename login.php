@@ -13,6 +13,7 @@
         header('location: dashboard.php');
       }
        ?>
+        <a href="register.php">Click here to Register </a>     
         <h2 class="ui dividing header">Login Page</h2>
         <form class="ui form" action="checklogin.php" method="POST">
           <div class="field">
