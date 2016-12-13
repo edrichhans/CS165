@@ -71,5 +71,6 @@ if($bool){
   mysql_query("INSERT INTO user (name, username, password, email, phone) VALUES ('$name', '$username', '$password', '$email', '$phone')");
   Print '<script>alert("Successfully Registered!");</script>'; // Prompts the user
   Print '<script>window.location.assign("register.php");</script>'; // redirects to register.php
+  header('location:login.php');
 }
 ?>

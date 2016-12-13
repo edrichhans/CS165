@@ -22,6 +22,8 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `ticketing` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `ticketing`;
 
+
+
 -- --------------------------------------------------------
 
 --
@@ -194,3 +196,31 @@ ALTER TABLE `user`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+ALTER TABLE `created`
+  ADD FOREIGN KEY (userID) REFERENCES user(userID);
+
+
+ALTER TABLE `created`
+  ADD FOREIGN KEY (eventID) REFERENCES event(eventID);
+
+
+ALTER TABLE `reserved`
+  ADD FOREIGN KEY (ticketNo) REFERENCES tickets(ticketNo);
+
+
+ALTER TABLE `reserved`
+  ADD FOREIGN KEY (userID) REFERENCES user(userID);
+
+
+ALTER TABLE `shows`
+  ADD FOREIGN KEY (eventID) REFERENCES event(eventID);
+
+ALTER TABLE `shows`
+  ADD FOREIGN KEY (theaterID) REFERENCES theater(theaterID);
+
+ALTER TABLE `tickets`
+  ADD FOREIGN KEY (showID) REFERENCES shows(showID);
+
+
